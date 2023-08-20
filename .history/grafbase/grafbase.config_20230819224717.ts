@@ -5,9 +5,9 @@ const User = g.model('User', {
   name: g.string().length({ min:2, max: 20 }),
   email: g.string().unique(),
   avatarUrl: g.url(),
-  description: g.string().optional(),
-  githubUrl: g.url().optional(),
-  linkedinUrl: g.string().optional(),
+  discription: g.string().optional(),
+  guthubUrl: g.url().optional(),
+  linkedInUrl: g.string().optional(),
   Projects: g.relation(() => project).list().optional(),
 }).auth((rules) => {
   rules.public().read()
@@ -16,9 +16,9 @@ const User = g.model('User', {
 // @ts-ignore
 const project = g.model('Project', {
   title: g.string().length({ min: 3 }),
-  description: g.string(),
+  discription: g.string(),
   image: g.url(),
-  githubUrl: g.url(),
+  guthubUrl: g.url(),
   catogory: g.string().search(),
   createdBy: g.relation(() => User)
 }).auth((rules) => {
