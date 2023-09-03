@@ -1,6 +1,6 @@
 import { GraphQLClient } from "graphql-request";
 
-import { createProjectMutation, createUserMutation, deleteProjectMutation, updateProjectMutation, getProjectByIdQuery, getProjectsOfUserQuery, getUserQuery, projectsQuery } from "@/graphql";
+import { createProjectMutation, createUserMutation, deleteProjectMutation, updateProjectMutation, getProjectByIdQuery, getProjectsOfUserQuery, getUserQuery, allProject } from "@/graphql";
 import { ProjectForm } from "@/common.types";
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -41,11 +41,15 @@ const makeGraphQLRequest = async (query: string, variables = {}) => {
   }
 };
 
-export const fetchAllProjects = (category?: string | null, endcursor?: string | null) => {
-  client.setHeader("x-api-key", apiKey);
+export const fetchAllProjects = (category?: string, endcursor?: string) => {
+  client.setHeader('x-api-key', apiKey)
 
-  return makeGraphQLRequest(projectsQuery, { category, endcursor });
-};
+  if (!category) {
+    return makeGraphQLRequest(allProject)
+  }
+
+  return makeGraphQLRequest(allProject, { category, endcursor })
+}
 
 export const createNewProject = async (form: ProjectForm, creatorId: string, token: string) => {
   const imageUrl = await uploadImage(form.image);
